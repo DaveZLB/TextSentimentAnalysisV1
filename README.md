@@ -14,7 +14,7 @@
 
 - 安装依赖
 ```cmd
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 - 生成WordEmbedding

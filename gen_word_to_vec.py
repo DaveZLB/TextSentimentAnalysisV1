@@ -6,7 +6,6 @@ sentences = word2vec.LineSentence("data/output/wordEmbedding.txt")
 a = list(sentences)
 print(len(a))
 model = gensim.models.Word2Vec(sentences, size=200, sg=1, iter=8)
-#model.wv.save_word2vec_format("embedding/word_vector" + ".bin", binary=True)
 model.wv.save_word2vec_format("embedding/word_vector" + ".bin", binary=False)
 
 

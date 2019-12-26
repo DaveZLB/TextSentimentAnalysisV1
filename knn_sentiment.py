@@ -101,7 +101,7 @@ def evaluate_knn(model_filepath, X_test, Y_test):
         if Y_predict[index] == Y_test[index]:
             right += 1
     score = right / len(Y_predict)
-    print('model accuray is :{0}'.format(score))#0.7909303101033678
+    print('knn model accuray is :{0}'.format(score))#0.7909303101033678
     return score
 
 '''实际应用测试'''
@@ -114,11 +114,17 @@ def predict_knn(model_filepath):
     print('sentence1', model.predict(rep_sen1)) #[1]
     print('sentence2', model.predict(rep_sen2)) #[0]
 
-if __name__ == '__main__':
+def knn_test():
     X_train, Y_train, X_test, Y_test = build_traindata()
     model_filepath = './model/sentiment_knn_model.m'
+    evaluate_knn(model_filepath, X_test, Y_test)
+    #predict_knn(model_filepath)
+
+def knn_train():
+    X_train, Y_train, X_test, Y_test = build_traindata()
     print(X_train.shape, Y_train.shape)
     print(X_test.shape, Y_test.shape)
     train_knn(X_train, Y_train, X_test, Y_test)
-    evaluate_knn(model_filepath, X_test, Y_test)
-    predict_knn(model_filepath)
+
+if __name__ == '__main__':
+    knn_test()

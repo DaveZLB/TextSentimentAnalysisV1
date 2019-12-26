@@ -71,7 +71,7 @@ def evaluate_decisiontree(model_filepath, X_test, Y_test):
         if int(Y_predict[index]) == int(Y_test[index]):
             right += 1
     score = right / len(Y_predict)
-    print('model accuray is :{0}'.format(score)) #0.6907302434144715
+    print('decisiontree model accuray is :{0}'.format(score)) #0.6907302434144715
     return score
 
 '''实际应用测试'''
@@ -84,11 +84,17 @@ def predict_decisiontree(model_filepath):
     print('sentence1', model.predict(rep_sen1)) #sentence1 [0]
     print('sentence2', model.predict(rep_sen2)) #sentence2 [0]
 
-if __name__ == '__main__':
+def decisiontree_test():
     X_train, Y_train, X_test, Y_test = build_traindata()
     model_filepath = './model/sentiment_decisiontree_model.m'
+    evaluate_decisiontree(model_filepath, X_test, Y_test)
+    #predict_decisiontree(model_filepath)
+
+def decisiontree_train():
+    X_train, Y_train, X_test, Y_test = build_traindata()
     print(X_train.shape, Y_train.shape)
     print(X_test.shape, Y_test.shape)
     train_decisiontree(X_train, Y_train)
-    evaluate_decisiontree(model_filepath, X_test, Y_test)
-    predict_decisiontree(model_filepath)
+
+if __name__ == '__main__':
+    decisiontree_test()

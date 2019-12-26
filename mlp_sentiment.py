@@ -84,13 +84,20 @@ def predict_mlp(model_filepath):
     print('test after load: ', model.predict(sentence_vector1))
     print('test after load: ', model.predict(sentence_vector2))
 
+def mlp_test():
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    model_filepath = './model/sentiment_mlp_model.h5'
+    model = load_model(model_filepath)
+    rets = model.evaluate(X_test, Y_test, verbose=0)
+    print('mlp model accuray is :{0}'.format(rets[1]))
+
+def mlp_train():
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    print(X_train.shape, Y_train.shape)
+    print(X_test.shape, Y_test.shape)
+    train_mlp(X_train, Y_train, X_test, Y_test)
 
 if __name__ == '__main__':
-    #X_train, Y_train, X_test, Y_test = build_traindata()
-    model_filepath = './model/sentiment_mlp_model.h5'
-    #print(X_train.shape, Y_train.shape)
-    #print(X_test.shape, Y_test.shape)
-    #train_mlp(X_train, Y_train, X_test, Y_test)
-    predict_mlp(model_filepath)
+    mlp_test()
 
 

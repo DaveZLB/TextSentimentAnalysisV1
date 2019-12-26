@@ -73,7 +73,7 @@ def evaluate_bayes(model_filepath, X_test, Y_test):
         if int(Y_predict[index]) == int(Y_test[index]):
             right += 1
     score = right / len(Y_predict)
-    print('model accuray is :{0}'.format(score)) #0.7437479159719906
+    print('bayes model accuray is :{0}'.format(score)) #0.7437479159719906
     return score
 
 '''实际应用测试'''
@@ -90,13 +90,18 @@ def predict_bayes(model_filepath):
     sentence2 [1] --> 评判错误
     '''
 
-
-
-if __name__ == '__main__':
+def bayes_test():
     X_train, Y_train, X_test, Y_test = build_traindata()
     model_filepath = './model/sentiment_bayes_model.m'
-    #print(X_train.shape, Y_train.shape)
-    #print(X_test.shape, Y_test.shape)
-    #train_bayes(X_train, Y_train)
     evaluate_bayes(model_filepath, X_test, Y_test)
-    #predict_bayes(model_filepath)
+    # predict_bayes(model_filepath)
+def bayes_train():
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    print(X_train.shape, Y_train.shape)
+    print(X_test.shape, Y_test.shape)
+    train_bayes(X_train, Y_train)
+
+if __name__ == '__main__':
+    bayes_test()
+
+

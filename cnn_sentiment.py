@@ -98,13 +98,23 @@ def predict_cnn(model_filepath):
     print(sentence_vector)
     print('test after load: ', model.predict(sentence_vector))
 
+def evaluate_cnn(model_filepath):
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    model = load_model(model_filepath)
+    result = model.evaluate(X_test, Y_test,verbose = 0)
+    print('cnn model accuray is :{0}'.format(result[1]))
+
+def cnn_test():
+    model_filepath = './model/sentiment_cnn_model.h5'
+    evaluate_cnn(model_filepath)
+
+def cnn_train():
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    print(X_train.shape, Y_train.shape)
+    print(X_test.shape, Y_test.shape)
+    train_cnn(X_train, Y_train, X_test, Y_test)
 
 if __name__ == '__main__':
-   # X_train, Y_train, X_test, Y_test = build_traindata()
-    model_filepath = './model/sentiment_cnn_model.h5'
-   # print(X_train.shape, Y_train.shape)
-   # print(X_test.shape, Y_test.shape)
-   # train_cnn(X_train, Y_train, X_test, Y_test)
-    predict_cnn(model_filepath)
+    cnn_test()
 
 

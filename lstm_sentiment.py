@@ -9,7 +9,11 @@ import numpy as np
 from keras.layers import Dropout
 from keras.models import load_model
 import keras.backend as K
+import keras_metrics as km
 
+recall = km.categorical_recall(label=0)
+precision = km.categorical_precision(label=0)
+f1 = km.categorical_f1_score(label = 0)
 
 def cal_recall(y_true, y_pred):
     """Recall metric.
@@ -59,9 +63,9 @@ def plot_acc_and_loss(history):
 def plot_precision_recall_f1(history):
     from matplotlib import pyplot as plt
     acc = history.history['acc']
-    precision = history.history['cal_precision']
-    recall = history.history['cal_recall']
-    f1 = history.history['cal_f1']
+    precision = history.history['precision']
+    recall = history.history['recall']
+    f1 = history.history['f1_score']
     epochs = range(1, len(acc) + 1)
     plt.plot(epochs, precision, 'go-.', label='precision')
     plt.plot(epochs, recall, 'yo-.', label='recall')
@@ -136,8 +140,8 @@ def train_lstm(X_train, Y_train, X_test, Y_test):
     model.add(Dense(2, activation='softmax'))
     model.compile(loss='categorical_crossentropy',
                   optimizer='rmsprop',
-                  metrics=['acc',cal_recall,cal_precision,cal_f1])
-    history = model.fit(X_train, Y_train, batch_size=100, epochs=30, validation_data=(X_test, Y_test))
+                  metrics=["acc",recall,precision,f1])
+    history = model.fit(X_train, Y_train, batch_size=100, epochs=20, validation_data=(X_test, Y_test))
 
     plot_acc_and_loss(history)
     plot_precision_recall_f1(history)
@@ -184,9 +188,7 @@ def lstm_predict():
         ,'酒店的环境非常好，价格也便宜，值得推荐'
         ,'质量不错，是正品 ，安装师傅也很好，才要了83元材料费'
         ,'东西非常不错，安装师傅很负责人，装的也很漂亮，精致，谢谢安装师傅！'
-        ,'手机质量太差了，傻逼店家，赚黑心钱，以后再也不会买了'
-        ,'我是傻X'
-        ,'你是傻X'
+        ,'手机质量太差了，傻X店家，赚黑心钱，以后再也不会买了'
         ,'屏幕较差，拍照也很粗糙。']
     for sentence in sentence_list:
         sentence_vector = np.array([rep_sentencevector(sentence)])
@@ -194,7 +196,28 @@ def lstm_predict():
         print(sentence)
         print(result)
 
+def lstm_predict1():
+    model_filepath = './model/sentiment_lstm_model1.h5'
+    model = load_model(model_filepath)
+    sentence_list = ['这个电影太差劲了！']
+    for sentence in sentence_list:
+        sentence_vector = np.array([rep_sentencevector(sentence)])
+        result = model.predict(sentence_vector)
+        print(sentence)
+        print(result)
+
+def lstm_precision_recall():
+    from sklearn.metrics import classification_report
+    model_filepath = './model/sentiment_lstm_model1.h5'
+    model = load_model(model_filepath)
+    X_train, Y_train, X_test, Y_test = build_traindata()
+    y_pred = model.predict(X_test, batch_size=100, verbose=1)
+    y_pred_bool = np.argmax(y_pred, axis=1)
+    y_test_bool = np.argmax(Y_test, axis=1)
+    target_names = ['Negative', 'Positive']
+    print(classification_report(y_test_bool, y_pred_bool))
 
 #test
 if __name__ == '__main__':
-    lstm_predict()
+    lstm_train()
+

@@ -8,6 +8,25 @@ import gensim
 import numpy as np
 from sklearn.externals import joblib
 
+
+def plot_acc_and_loss(history):
+    from matplotlib import pyplot as plt
+    acc = history.history['acc']
+    val_acc = history.history['val_acc']
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    epochs = range(1, len(acc) + 1)
+
+    plt.plot(epochs, acc, 'go-.', label='Training acc')
+    plt.plot(epochs, val_acc, 'g', label='Validation acc')
+    plt.plot(epochs, loss, 'ro-.', label='Training loss')
+    plt.plot(epochs, val_loss, 'r', label='Validation loss')
+    plt.title('Accuracy and Loss')
+    plt.legend()
+
+    plt.show()
+
 VECTOR_DIR = './embedding/word_vector.bin'  # 词向量模型文件
 model = gensim.models.KeyedVectors.load_word2vec_format(VECTOR_DIR, binary=False)
 
@@ -56,7 +75,8 @@ def build_traindata():
 def train_svm(X_train, Y_train):
     from sklearn.svm import SVC
     model = SVC(kernel='linear')
-    model.fit(X_train, Y_train)
+    history = model.fit(X_train, Y_train)
+    print(history)
     joblib.dump(model, './model/sentiment_svm_model.m')
 
 '''基于svm分类器的预测'''
@@ -96,4 +116,4 @@ def svm_train():
     train_svm(X_train, Y_train)
 
 if __name__ == '__main__':
-    svm_test()
+    svm_train()

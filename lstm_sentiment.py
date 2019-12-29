@@ -196,10 +196,20 @@ def lstm_predict():
         print(sentence)
         print(result)
 
-def lstm_predict1():
+def lstm_negative_predict():
     model_filepath = './model/sentiment_lstm_model1.h5'
     model = load_model(model_filepath)
     sentence_list = ['这个电影太差劲了！']
+    for sentence in sentence_list:
+        sentence_vector = np.array([rep_sentencevector(sentence)])
+        result = model.predict(sentence_vector)
+        print(sentence)
+        print(result)
+
+def lstm_positive_predict():
+    model_filepath = './model/sentiment_lstm_model1.h5'
+    model = load_model(model_filepath)
+    sentence_list = ['这个电影非常好看']
     for sentence in sentence_list:
         sentence_vector = np.array([rep_sentencevector(sentence)])
         result = model.predict(sentence_vector)
@@ -219,5 +229,5 @@ def lstm_precision_recall():
 
 #test
 if __name__ == '__main__':
-    lstm_train()
+    lstm_positive_predict()
 
